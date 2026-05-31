@@ -1,68 +1,110 @@
+# Grön IT-policy
+
+# Product Vision
+
+Visionen är att skapa ett PowerShell-script som inventerar ett bestämt nätverk. Syftet är att minska onödig energiförbrukning genom att hitta klientdatorer som inte behöver vara igång och kunna stänga av dem efter arbetstid.
+
+Scriptet ska använda CIM/WMI för att hämta information om datorerna i nätverket. Det ska kunna skilja mellan klientdatorer och servrar, eftersom servrar och andra viktiga maskiner inte får stängas av.
+
+Tanken är att scriptet ska kontrollera datorer inom vårt definierade klientintervall. Om en klient bedöms som inaktiv ska scriptet kunna visa eller genomföra en avstängning på ett säkert sätt.
+
+Lösningen ska först testas i simuleringsläge så att vi kan se vad scriptet skulle göra utan att råka stänga av fel dator. Den färdiga lösningen ska kunna schemaläggas så att den körs automatiskt klockan 20:00.
+
 # Arbetssätt enligt Scrum
 
 Vi arbetar i fyra korta sprintar. Varje sprint ska leda till något som går att testa eller visa upp.
 
-Vi använder GitHub Project Board för att hålla reda på arbetet. Alla uppgifter läggs in som User Stories. När någon börjar arbeta med en uppgift flyttas den till `In Progress`. När uppgiften är klar och testad flyttas den till `Done`.
+Vi använder GitHub Project Board för att hålla reda på arbetet. Uppgifterna ligger som User Stories på tavlan. När en uppgift ska göras i en sprint ligger den i Sprint Backlog. När någon börjar arbeta med uppgiften flyttas den till In Progress. När uppgiften är färdig och testad flyttas den till Done.
 
-## Roller
+# Roller
 
-**Product Owner** ansvarar för produktens mål och bestämmer vad som är viktigast att göra först.
+Product Owner ansvarar för produktens mål och bestämmer vad som är viktigast att göra först.
 
-**Scrum Master** ansvarar för att arbetssättet följs och skriver ner vad gruppen kommer fram till efter varje sprint.
+Scrum Master ansvarar för att arbetssättet följs och skriver ner vad gruppen kommer fram till efter Sprint Review och Retrospective.
 
-**Utvecklare** ansvarar för att skriva, testa och dokumentera scriptet.
+Utvecklare ansvarar för att skriva, testa och dokumentera scriptet.
 
 # Product Backlog
 
-## Sprint 1 – Projektstart och basscript
+## Sprint 1 – Grund, inventering och loggning
 
-* Som grupp vill vi dokumentera en Product Vision så att alla förstår produktens mål och avgränsningar.
-* Som grupp vill vi ha ett GitHub-repo och en fungerande Project Board så att arbetet kan följas enligt Scrum.
-* Som systemadministratör vill jag ha ett körbart PowerShell-basscript som skapar en loggfil så att vi kan verifiera att grunden fungerar.
+I den första sprinten ska vi skapa grunden till lösningen. Vi ska börja bygga PowerShell-modulen och en startfil som kör scriptet. Scriptet ska även kunna inventera minst en dator med CIM/WMI och spara resultatet i en loggfil.
 
-**Resultat efter sprinten:** Vi har en tydlig plan, en GitHub-tavla och ett enkelt script som kan skapa en loggfil.
+User Stories:
 
-## Sprint 2 – Inventering med CIM/WMI
+* Som utvecklare vill jag skapa en enkel PowerShell-modul och startfil med loggning så att vi har en fungerande grund att bygga vidare på.
+* Som systemadministratör vill jag att scriptet ska kunna inventera minst en dator med CIM/WMI och spara resultatet i loggen så att vi kan visa att inventeringen fungerar.
 
-* Som systemadministratör vill jag att scriptet ska kunna inventera minst en dator med CIM/WMI så att vi kan hämta systeminformation.
-* Som systemadministratör vill jag att inventeringsresultatet ska sparas i en loggfil så att vi kan kontrollera och visa vad scriptet hittar.
+Resultat efter sprinten:
 
-**Resultat efter sprinten:** Scriptet kan läsa information från minst en dator och spara resultatet i en loggfil.
+Vi har en första fungerande version av modulen och startfilen. Scriptet kan läsa information från minst en dator och skriva resultatet till en loggfil.
 
-## Sprint 3 – Klienter, servrar och säker testning
+## Sprint 2 – Klientintervall, servrar och inaktiva klienter
 
-* Som miljöansvarig vill jag att scriptet ska kunna skilja klientdatorer från servrar så att viktiga maskiner inte stängs av.
-* Som miljöansvarig vill jag att scriptet ska kunna identifiera inaktiva klienter så att vi kan hitta datorer som inte behöver vara igång.
-* Som utvecklare vill jag testa avstängningsfunktionen i ett säkert testläge så att ingen fel dator stängs av.
+I den andra sprinten ska scriptet börja arbeta mot vårt definierade klientintervall i nätverket. Det ska kunna kontrollera flera datorer och skilja klientdatorer från servrar eller andra maskiner som inte får stängas av.
 
-**Resultat efter sprinten:** Scriptet kan skilja på klienter och servrar och visa vilka klienter som skulle kunna stängas av.
+Scriptet ska också kunna markera vilka klienter som kan vara inaktiva och därför möjliga kandidater för avstängning.
 
-## Sprint 4 – Automatisk körning och redovisning
+User Stories:
 
-* Som systemadministratör vill jag schemalägga scriptet klockan 20:00 så att lösningen kan köras automatiskt.
-* Som grupp vill vi testa och dokumentera hela lösningen så att den går att visa upp vid redovisningen.
+* Som systemadministratör vill jag att scriptet ska söka igenom vårt definierade klientintervall så att flera datorer i nätverket kan kontrolleras.
+* Som miljöansvarig vill jag att scriptet ska skilja klientdatorer från servrar och hoppa över skyddade maskiner så att viktiga datorer inte kan stängas av.
+* Som miljöansvarig vill jag att scriptet ska identifiera inaktiva klientkandidater så att endast datorer som inte behöver vara igång föreslås för avstängning.
 
-**Resultat efter sprinten:** Vi har en testad och dokumenterad lösning som kan demonstreras.
+Resultat efter sprinten:
+
+Scriptet kan kontrollera datorer inom klientintervallet, sortera bort servrar och visa vilka klienter som kan vara kandidater för avstängning.
+
+## Sprint 3 – Avstängning och schemaläggning
+
+I den tredje sprinten ska själva energiåtgärden göras färdig. Scriptet ska kunna testa avstängning i simuleringsläge och även kunna demonstreras på en godkänd testklient.
+
+Vi ska också schemalägga scriptet så att det kan köras automatiskt klockan 20:00.
+
+User Stories:
+
+* Som utvecklare vill jag att avstängningen ska kunna testas i simuleringsläge och demonstreras kontrollerat på en godkänd testklient så att vi visar funktionen utan att riskera fel maskin.
+* Som systemadministratör vill jag schemalägga scriptet till klockan 20:00 så att lösningen kan köras automatiskt utanför arbetstid.
+
+Resultat efter sprinten:
+
+Scriptets viktigaste funktioner är klara. Det kan inventera nätverket, logga resultat, skydda servrar, hitta möjliga inaktiva klienter och visa en säker avstängning. Det kan även schemaläggas till klockan 20:00.
+
+## Sprint 4 – Kontroll och redovisning
+
+Den fjärde sprinten sker samma dag som redovisningen. Därför ska vi inte bygga nya viktiga funktioner då. Lösningen ska redan vara klar efter Sprint 3.
+
+I Sprint 4 ska vi kontrollera att allt fungerar, att dokumentationen finns och att vi kan visa upp lösningen på ett tydligt sätt.
+
+User Stories:
+
+* Som grupp vill vi testa hela flödet och genomföra en säker demonstration så att vi kan visa en fungerande produkt vid redovisningen.
+* Som grupp vill vi slutkontrollera att lösningen och sprintresultaten är dokumenterade så att arbetet går att följa och bedöma.
+
+Resultat efter sprinten:
+
+Vi har kontrollerat att scriptet fungerar, att dokumentationen är klar och att gruppen kan genomföra redovisningen.
 
 # Sprint Review och Retrospective
 
-Efter varje sprint visar gruppen vad som fungerar. Det kan till exempel vara en loggfil, ett inventeringsresultat eller en testad funktion.
+Efter varje sprint visar gruppen vad som fungerar. Det kan till exempel vara en loggfil, ett inventeringsresultat eller en testad funktion i scriptet.
 
-Efter detta pratar gruppen om:
+Efter genomgången pratar gruppen om:
 
 * Vad gick bra?
 * Vad gick mindre bra?
-* Vad behöver vi förbättra till nästa sprint?
+* Vad behöver vi göra bättre till nästa sprint?
 
-Scrum Master skriver ner det viktigaste från genomgången.
+Scrum Master skriver ner det viktigaste efter varje sprint.
 
 # Definition of Done
 
-En User Story är klar när:
+En User Story räknas som klar när:
 
 * uppgiften är genomförd,
 * funktionen är testad,
 * resultatet går att visa upp,
+* färdig kod är sparad i GitHub,
 * GitHub-tavlan är uppdaterad.
 
-Scriptet får endast stänga av en godkänd testklient. Servrar ska aldrig kunna stängas av av scriptet.
+Scriptet får endast genomföra avstängning på en godkänd testklient. Servrar och andra skyddade maskiner ska aldrig kunna stängas av av scriptet.
