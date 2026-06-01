@@ -1,6 +1,9 @@
 <#
     Huvudskriptet för att köra inventeringsprogrammet
 #>
+
+using module ./modules/loggning.psm1
+
 try {
     Write-Output "Hej, denna filen är fortfarande ganska tom, borde anropa lite funktioner här"
 
@@ -15,7 +18,8 @@ try {
         }
     )
 
-    $data | export-csv -Path $csvFilNamn -NoTypeInformation
+    LoggDataTillCSV -csvFilNamn $csvFilNamn -data $data
+    
 }
 catch {
     Write-Output "Error"
