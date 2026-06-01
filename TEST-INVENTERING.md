@@ -125,11 +125,7 @@ try {
     $endHost = 254
 
     # Kör inventeringen och försök hämta OS-information via CIM.
-    $data = Get-NetworkInventory `
-        -NetworkPrefix $networkPrefix `
-        -StartHost $startHost `
-        -EndHost $endHost `
-        -HamtaOS
+    <#
 
     # Här kan $data senare skickas vidare till avstängningsmodulen.
 
