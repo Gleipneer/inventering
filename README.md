@@ -108,3 +108,6 @@ En User Story räknas som klar när:
 * GitHub-tavlan är uppdaterad.
 
 Scriptet får endast genomföra avstängning på en godkänd testklient. Servrar och andra skyddade maskiner ska aldrig kunna stängas av av scriptet.
+
+## Kör koden
+`.\src\main.ps1`
