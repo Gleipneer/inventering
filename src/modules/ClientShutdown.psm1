@@ -18,7 +18,7 @@ function Invoke-ClientShutdown {
             $ip   = $computer.IPAddress
 
             if ($Mode -eq 'Simulate') {
-                Write-Log "[SIMULATE] Skulle stangt av $name ($ip)" -LogPath $LogPath
+                Write-Log "[SIMULATE] Skulle stangt av $name ($ip)" -Level INFO -LogPath $LogPath
                 continue
             }
 
@@ -26,12 +26,16 @@ function Invoke-ClientShutdown {
 
             $delaySec = $DelayMinutes * 60
 
-            & shutdown.exe /s /m "\\$name" /t $delaySec /f /c "Gron IT-policy" 2>$null
-
-            if ($LASTEXITCODE -eq 0) {
+            try {
+                Invoke-Command -ComputerName $name -ScriptBlock {
+                    param($delay)
+                    shutdown.exe /s /t $delay /f /c "Gron IT-policy"
+                } -ArgumentList $delaySec -ErrorAction Stop
+                
                 Write-Log "  OK: Avstangning schemalagd pa $name" -Level OK -LogPath $LogPath
-            } else {
-                Write-Log "  FEL: Kunde inte stanga av $name (exit $LASTEXITCODE)" -Level ERROR -LogPath $LogPath
+            } 
+            catch {
+                Write-Log "  FEL: Kunde inte stanga av $name - $_" -Level ERROR -LogPath $LogPath
             }
         }
     }

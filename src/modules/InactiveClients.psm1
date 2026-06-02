@@ -1,4 +1,4 @@
-function Get-InactiveClients {
+function Get-InactiveClient {
     param(
         [Parameter(Mandatory, ValueFromPipeline)]
         $Computers
