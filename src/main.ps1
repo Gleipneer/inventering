@@ -2,24 +2,17 @@
     Huvudskriptet för att köra inventeringsprogrammet
 #>
 
+# Importera moduler
 using module ./modules/loggning.psm1
+using module ./modules/inventering.psm1
 
 try {
-    Write-Output "Hej, denna filen är fortfarande ganska tom, borde anropa lite funktioner här"
+    # Tillgängliga params för Get-NetworkInventory: -NetworkPrefix -StartHost -EndHost -HamtaOS
+    # Gör en nätverk inventering på nätet 192.168.115.0, försök hämta OS för varje enhet
+    $inventeringData = Get-NetworkInventory -NetworkPrefix 192.168.115 -HamtaOS
 
-    # Spara data till en CSV fil
-    $csvFilNamn = ".\logs\result.csv"
-
-    # TODO: lägg in faktisk data som ska loggas här
-    $data = @(
-        [PSCustomObject]@{
-            ip = "test"
-            hostname = "test"
-        }
-    )
-
-    LoggDataTillCSV -csvFilNamn $csvFilNamn -data $data
-    
+    # Skriv data från nätverksinventeringen till csv fil 
+    LoggDataTillCSV -csvFilNamn ".\logs\inventeringResultat.csv" -data $inventeringData
 }
 catch {
     Write-Output "Error"

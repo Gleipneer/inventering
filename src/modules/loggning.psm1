@@ -13,4 +13,5 @@ function LoggDataTillCSV {
 
 }
 
+# Gör funktionen tillgänglig när modulen importeras.
 Export-ModuleMember -Function LoggDataTillCSV
