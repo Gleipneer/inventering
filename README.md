@@ -111,3 +111,17 @@ Scriptet får endast genomföra avstängning på en godkänd testklient. Servrar
 
 ## Kör koden
 `.\src\main.ps1`
+
+## Inför imorgon
+    
+    1. Bestäm vad "inaktiv klient" betyder i projektet.
+
+    2. Kontrollera vilken data som behövs för att avgöra det.
+
+    3. Gör klart Get-InactiveClient så att den faktiskt filtrerar kandidater.
+
+    4. Lös loggningen i ClientShutdown, eftersom Write-Log saknas.
+
+    5. Testa avstängningsmodulen endast i Simulate-läge.
+
+    6. Koppla först därefter in modulerna i main.ps1.
