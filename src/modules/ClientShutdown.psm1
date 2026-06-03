@@ -18,8 +18,10 @@ function Invoke-ClientShutdown {
         [string]$LogPath = 'C:\Logs\NetworkInventory.log'
     )
 
-    $shutdownComputers = $()
-    $failedShutdownComputers = $()
+    begin {
+        $shutdownComputers = $()
+        $failedShutdownComputers = $()
+    }
 
     process {
         foreach ($computer in $Computers) {
@@ -58,7 +60,9 @@ function Invoke-ClientShutdown {
     }
 
 
+    end {
     # Skriv log data till CSV filer
     LoggDataTillCSV -csvFilNamn ".\logs\avstängdaKlienter.csv" -data $shutdownComputers
     LoggDataTillCSV -csvFilNamn ".\logs\ejAvstängdaKlienter.csv" -data $failedShutdownComputers
+}
 }
