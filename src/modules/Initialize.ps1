@@ -2,7 +2,7 @@
     Initialize-skriptet för inventeringsprojektet
     
     Kör detta en gång före Main.ps1 för att säkra att alla förutsättningar uppfylls:
-    - WinRM aktiverat och körande
+    - WinRM aktiverat och körs
     - TrustedHosts konfigurerat
 #>
 
