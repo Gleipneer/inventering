@@ -16,6 +16,9 @@ try {
     # Skicka inventeringsresultatet vidare till nästa steg i flödet.
     $inactiveClients = $inventeringData | Get-InactiveClient
 
+    # Kör avstängningsmodulen i simuleringsläge via main-skriptet.
+    $inactiveClients | Invoke-ClientShutdown -Mode Simulate
+
     # Skriv data från nätverksinventeringen till csv fil 
     LoggDataTillCSV -csvFilNamn ".\logs\inventeringResultat.csv" -data $inventeringData
 }
