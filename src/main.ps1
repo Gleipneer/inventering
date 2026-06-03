@@ -13,6 +13,9 @@ try {
     # Gör en nätverk inventering på nätet 192.168.115.0, försök hämta OS för varje enhet
     $inventeringData = Get-NetworkInventory -NetworkPrefix 192.168.115 -HamtaOS
 
+    # Skicka inventeringsresultatet vidare till nästa steg i flödet.
+    $inactiveClients = $inventeringData | Get-InactiveClient
+
     # Skriv data från nätverksinventeringen till csv fil 
     LoggDataTillCSV -csvFilNamn ".\logs\inventeringResultat.csv" -data $inventeringData
 }
