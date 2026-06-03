@@ -7,8 +7,11 @@ using module ./modules/loggning.psm1
 using module ./modules/inventering.psm1
 using module ./modules/InactiveClients.psm1
 using module ./modules/ClientShutdown.psm1
+using module ./modules/Initialize.psm1
 
 try {
+    Initialize-NetworkInventory
+
     # Tillgängliga params för Get-NetworkInventory: -NetworkPrefix -StartHost -EndHost -HamtaOS
     # Gör en nätverk inventering på nätet 192.168.115.0, försök hämta OS för varje enhet
     $inventeringData = Get-NetworkInventory -NetworkPrefix 192.168.115 -HamtaOS
