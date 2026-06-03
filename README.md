@@ -1,4 +1,4 @@
-För att se den flytande dokumentationen och dokumenteringen från våra möten, se [Dokumentation](./dokumentation.md)
+För att se den flytande dokumentationen och dokumenteringen från våra möten, se [Dokumentation](Dokumentation.md)
 
 
 # Grön IT-policy
