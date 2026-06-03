@@ -1,3 +1,6 @@
+För att se den flytande dokumentationen och dokumenteringen från våra möten, se [Dokumentation](./dokumentation.md)
+
+
 # Grön IT-policy
 
 # Product Vision
