@@ -1,19 +1,48 @@
+#requires -Version 7.0
+
 <#
-    Huvudskriptet för att köra inventeringsprogrammet
+    Huvudskriptet for att kora inventeringsprogrammet.
+    PC01 ar godkand testklient i VM-labben.
 #>
 
-# Importera moduler
-using module ./modules/loggning.psm1
-using module ./modules/inventering.psm1
+param (
+    [ValidateSet("Simulate", "Shutdown")]
+    [string]$Mode = "Simulate"
+)
+
+Import-Module "$PSScriptRoot\modules\loggning.psm1" -Force
+Import-Module "$PSScriptRoot\modules\inventering.psm1" -Force
+Import-Module "$PSScriptRoot\modules\InactiveClients.psm1" -Force
+Import-Module "$PSScriptRoot\modules\ClientShutdown.psm1" -Force
 
 try {
-    # Tillgängliga params för Get-NetworkInventory: -NetworkPrefix -StartHost -EndHost -HamtaOS
-    # Gör en nätverk inventering på nätet 192.168.115.0, försök hämta OS för varje enhet
-    $inventeringData = Get-NetworkInventory -NetworkPrefix 192.168.115 -HamtaOS
+    New-Item -ItemType Directory -Path ".\logs" -Force | Out-Null
+    $logPath = ".\logs\NetworkInventory.log"
 
-    # Skriv data från nätverksinventeringen till csv fil 
+    # Inventera endast den godkanda testklienten PC01.
+    $inventeringData = Get-NetworkInventory `
+        -NetworkPrefix "192.168.14" `
+        -StartHost 100 `
+        -EndHost 100 `
+        -HamtaOS
+
     LoggDataTillCSV -csvFilNamn ".\logs\inventeringResultat.csv" -data $inventeringData
+
+    Write-Host "Inventeringsresultat:"
+    $inventeringData | Format-Table IPAddress, ComputerName, OS, Status -AutoSize
+
+    # Get-InactiveClient behaller endast klienter dar ingen anvandare ar inloggad.
+    $inaktivaKlienter = $inventeringData | Get-InactiveClient
+
+    Write-Host "Inaktiva klientkandidater:"
+    $inaktivaKlienter | Format-Table IPAddress, ComputerName, OS -AutoSize
+
+    $inaktivaKlienter |
+        Invoke-ClientShutdown `
+            -Mode $Mode `
+            -LogPath $logPath `
+            -ApprovedComputerName "PC01.bluestar5.local"
 }
 catch {
-    Write-Output "Error"
+    Write-Host "Fel: $($_.Exception.Message)"
 }
