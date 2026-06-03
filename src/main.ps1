@@ -5,6 +5,8 @@
 # Importera moduler
 using module ./modules/loggning.psm1
 using module ./modules/inventering.psm1
+using module ./modules/InactiveClients.psm1
+using module ./modules/ClientShutdown.psm1
 
 try {
     # Tillgängliga params för Get-NetworkInventory: -NetworkPrefix -StartHost -EndHost -HamtaOS
