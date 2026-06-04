@@ -23,17 +23,21 @@ Modulen tar emot en lista av klienter från ett nätverksinventeringsverktyg, fi
 ## Förutsättningar
 
 ### På servern (där modulen körs)
-- Windows Server med PowerShell 5.1 eller senare
-- WinRM aktiverat
+- Windows Server med PowerShell 7
+- WinRM aktiverat (hanteras automatiskt av `Initialize.ps1`)
 - TrustedHosts konfigurerat (hanteras automatiskt av `Initialize.ps1`)
 - Nätverksåtkomst till klienterna
+- AD och DNS är installerat och konfigurerat
 
 ### På klienterna
 - WinRM aktiverat
 - Lokal administratörsbehörighet
+- Domänansluten
 
 > **Observera:** Modulen är designad för domänanslutna miljöer och använder datornamn för anslutning via WinRM.
 
+### Det som behöver göras manuellt
+- Enable-PSRemoting -Force (Kör detta på klienten/klienterna)
 ---
 
 ## Returvärde

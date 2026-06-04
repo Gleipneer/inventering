@@ -1,4 +1,4 @@
-För att se den flytande dokumentationen och dokumenteringen från våra möten, se [Dokumentation](./dokumentation.md)
+För att se dokumentationen från våra möten, se [Dokumentation](Dokumentation.md)
 
 
 # Grön IT-policy
@@ -11,7 +11,7 @@ Scriptet ska använda CIM/WMI för att hämta information om datorerna i nätver
 
 Tanken är att scriptet ska kontrollera datorer inom vårt definierade klientintervall. Om en klient bedöms som inaktiv ska scriptet kunna visa eller genomföra en avstängning på ett säkert sätt.
 
-Lösningen ska först testas i simuleringsläge så att vi kan se vad scriptet skulle göra utan att råka stänga av fel dator. Den färdiga lösningen ska kunna schemaläggas så att den körs automatiskt klockan 20:00.
+Lösningen ska först testas i simuleringsläge så att vi kan se vad scriptet skulle göra utan att råka stänga av fel dator. Den färdiga lösningen ska kunna schemaläggas så att den körs automatiskt vid valfritt klockslag.
 
 # Arbetssätt enligt Scrum
 
@@ -114,17 +114,3 @@ Scriptet får endast genomföra avstängning på en godkänd testklient. Servrar
 
 ## Kör koden
 `.\src\main.ps1`
-
-## Inför imorgon
-    
-    1. Bestäm vad "inaktiv klient" betyder i projektet.
-
-    2. Kontrollera vilken data som behövs för att avgöra det.
-
-    3. Gör klart Get-InactiveClient så att den faktiskt filtrerar kandidater.
-
-    4. Lös loggningen i ClientShutdown, eftersom Write-Log saknas.
-
-    5. Testa avstängningsmodulen endast i Simulate-läge.
-
-    6. Koppla först därefter in modulerna i main.ps1.

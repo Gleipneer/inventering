@@ -71,7 +71,7 @@ Trots att det kom fram väldigt lite att lägga in i dagens sprint fanns de utve
 ## Onsdag 3/6 — Sprint 3
 
 **Morgonmöte:** 09:15  
-**Slutmöte:** TBD  
+**Slutmöte:** 16:00  
 **Deltagare:** Martin, Joakim, Benjamin, Aaren
 
 Dagens sprint blev något annorlunda då planerade lektioner tog upp delar av dagen. Arbetet med projektet påbörjades därför inte på allvar förrän ~12:30.
@@ -87,10 +87,19 @@ Målet för dagen:
 
 ### Sprint Review
 
-*(Fylls i efter sprintens slut)*
+Efter sprintens slut hade vi två fungerande versioner av skriptet, om än något ostabila.
+Beroende på skript och miljö fick man olika resultat.
+Majoriteten av gångerna var det inte skriptet som var problemet utan Windows.
 
 ---
 
 ### Sprint Retrospective
 
-*(Fylls i efter sprintens slut)*
+Att sista sprinten blev på plats i skolan var väldigt givande. Speciellt när målet var att koppla samman allt
+och justera det som behövde justeras.
+Kommunikationen inom gruppen var bra och det var smidigt att ta upp småsaker som behövde göras.
+Vi fick några mergekonflikter, vissa större än andra, men inget som inte gick att lösa.
+På gott och ont var det bra att de uppstod så vi fick dra lärdom av det.
+
+Absolut såg vi för- och nackdelar med att jobba både på plats och remote. Till framtiden skulle man kunna
+ta beslut om detta dagligen beroende på vad som ligger i pipen för nästkommande dag.
