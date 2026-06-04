@@ -17,10 +17,10 @@ try {
     $inventeringData = Get-NetworkInventory -NetworkPrefix 192.168.56 -StartHost 10 -EndHost 10 -HamtaOS
 
     # Skicka inventeringsresultatet vidare till nästa steg i flödet.
-    $inactiveClients = $inventeringData | Get-InactiveClient
+    # $inactiveClients = $inventeringData | Get-InactiveClient TODO: detta ger error
 
     # Kör avstängningsmodulen i simuleringsläge via main-skriptet.
-    $inactiveClients | Invoke-ClientShutdown -Mode Shutdown
+    $inventeringData | Invoke-ClientShutdown -Mode Shutdown
 
     # Skriv data från nätverksinventeringen till csv fil 
     LoggDataTillCSV -csvFilNamn ".\logs\inventeringResultat.csv" -data $inventeringData
