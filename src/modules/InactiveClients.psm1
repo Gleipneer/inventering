@@ -8,13 +8,10 @@ function Get-InactiveClient {
         foreach ($computer in $Computers) {
 
             try {
-                $cs = Get-CimInstance `
-                    -ClassName Win32_ComputerSystem `
-                    -ComputerName $computer.ComputerName `
-                    -ErrorAction Stop
+                $loggedOnUser = gwmi win32_loggedonuser -computername $computer.ComputerName
 
                 # Returnera bara klienter där ingen är inloggad
-                if ([string]::IsNullOrWhiteSpace($cs.UserName)) {
+                if (!($loggedOnUser)) {
                     $computer
                 }
             }

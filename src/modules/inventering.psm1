@@ -37,11 +37,19 @@ function Get-NetworkInventory {
     # 2. Pinga adresserna parallellt.
     # Endast adresser som svarar sparas vidare.
     $svarandeAdresser = @(
-        $allaAdresser | ForEach-Object -Parallel {
-            if (Test-Connection -TargetName $_ -IPv4 -Count 1 -Quiet -TimeoutSeconds 1) {
-                $_
+        foreach ($adress in $allaAdresser) {
+            try {
+                $ping = [System.Net.NetworkInformation.Ping]::new()
+                $svar = $ping.Send($adress, 1000)
+
+                if ($svar.Status -eq [System.Net.NetworkInformation.IPStatus]::Success) {
+                    $adress
+                }
             }
-        } -ThrottleLimit 32
+            catch {
+                # Gå vidare om ping misslyckas.
+            }
+        }
     )
 
     # 3. Skapa resultat för varje maskin som svarade.
