@@ -18,7 +18,6 @@ function LoggDataTillCSV {
 
 }
 
-# Gör funktionen tillgänglig när modulen importeras.
 function Write-Log {
     param (
             [string]$Message,
@@ -38,4 +37,5 @@ function Write-Log {
     Write-Output $rad
 }
 
+# Gör funktionen tillgänglig när modulen importeras.
 Export-ModuleMember -Function LoggDataTillCSV, Write-Log
