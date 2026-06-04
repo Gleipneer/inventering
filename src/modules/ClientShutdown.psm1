@@ -1,68 +1,61 @@
 <#
-    En modul för att stänga av windows klienter.
+    Stanger av en godkand testklient eller simulerar avstangningen.
 #>
 
-# Importera modul
-using module ./loggning.psm1
-
 function Invoke-ClientShutdown {
-    param(
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
+    param (
         [Parameter(Mandatory, ValueFromPipeline)]
         $Computers,
 
-        [ValidateSet('Simulate', 'Shutdown')]
-        [string]$Mode = 'Simulate',
+        [ValidateSet("Simulate", "Shutdown")]
+        [string]$Mode = "Simulate",
 
         [int]$DelayMinutes = 0,
 
-        [string]$LogPath = 'C:\Logs\NetworkInventory.log'
+        [string]$LogPath = "C:\Logs\NetworkInventory.log",
+
+        [string]$ApprovedComputerName = "PC01.bluestar5.local"
     )
 
-    begin {
-        $shutdownComputers = $()
-        $failedShutdownComputers = $()
-    }
-
     process {
-        foreach ($computer in $Computers) {
-
+        foreach ($computer in @($Computers)) {
             $name = $computer.ComputerName
-            $ip   = $computer.IPAddress
+            $ip = $computer.IPAddress
 
-            if ($Mode -eq 'Simulate') {
-                Write-Log "[SIMULATE] Skulle stangt av $name ($ip)" -Level INFO -LogPath $LogPath
+            if ($Mode -eq "Simulate") {
+                Write-Log `
+                    -Message "[SIMULATE] Skulle stangt av $name ($ip)" `
+                    -Level "INFO" `
+                    -LogPath $LogPath
+
                 continue
             }
 
-            Write-Log "Stangar av $name ($ip)..." -LogPath $LogPath
+            if ($name -ne $ApprovedComputerName) {
+                Write-Log `
+                    -Message "BLOCKERAD: $name ar inte godkand testklient." `
+                    -Level "ERROR" `
+                    -LogPath $LogPath
 
-            $delaySec = $DelayMinutes * 60
+                continue
+            }
 
-            try {
-                # Påbörja avstänging av dator
+            $delaySekunder = $DelayMinutes * 60
+
+            if ($PSCmdlet.ShouldProcess($name, "Stang av testklient")) {
                 Invoke-Command -ComputerName $name -ScriptBlock {
-                    param($delay)
+                    param ($delay)
                     shutdown.exe /s /t $delay /f /c "Gron IT-policy"
-                } -ArgumentList $delaySec -ErrorAction Stop
-                
-                Write-Log "  OK: Avstangning schemalagd pa $name" -Level OK -LogPath $LogPath
+                } -ArgumentList $delaySekunder -ErrorAction Stop
 
-                # Lägg till i logg data
-                $shutdownComputers += $computer
-            } 
-            catch {
-                Write-Log "  FEL: Kunde inte stanga av $name - $_" -Level ERROR -LogPath $LogPath
-
-                # Lägg till i logg data
-                $failedShutdownComputers += $computer
+                Write-Log `
+                    -Message "OK: Avstangning schemalagd pa $name." `
+                    -Level "OK" `
+                    -LogPath $LogPath
             }
         }
     }
-
-
-    end {
-    # Skriv log data till CSV filer
-    LoggDataTillCSV -csvFilNamn ".\logs\avstängdaKlienter.csv" -data $shutdownComputers
-    LoggDataTillCSV -csvFilNamn ".\logs\ejAvstängdaKlienter.csv" -data $failedShutdownComputers
 }
-}
+
+Export-ModuleMember -Function Invoke-ClientShutdown
